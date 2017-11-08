@@ -1,0 +1,9 @@
+#!/bin/bash
+for file in "$@"
+do
+	printf $(basename "$file")'\t'
+	ffmpeg -i "$file" -filter:a volumedetect -f null /dev/null |& awk -F': ' '/_volume:/{print $2}' | sed -e 's/ dB//g' | tr '\n' '\t'
+	python3.6 /home/tortoise/Downloads/simple_dr_meter-master/main.py "$file" |& awk -F': DR' '/: DR/{print $2}'
+	rm "$(dirname "$file")/dr.txt"
+	#printf '\n'
+done
