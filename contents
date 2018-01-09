@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#Create a file listing the names and md5 sums of all files in the specified image file.
+
+#ensure i am root
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root"
+   exit 1
+fi
+
+#iterate over argument filenames
+for filename in "$@"
+do
+	echo "$filename:"
+	RANDVAR=$(date|md5sum|cut -d" " -f1 -) #Name to use for the temporary directory
+	mkdir $RANDVAR
+	mount -o loop,ro "$filename" $RANDVAR #Mount the image file in the temporary directory
+	cd $RANDVAR
+	:>"../$filename.contents" #Ensure the output file is empty
+	find . -type f -exec md5sum {} \; | sed 's/  .\//  /' | tee -a "../$filename.contents" #sed is to remove ./ from beginning of paths
+	cd .. #Leave the temporary directory
+	umount -l $RANDVAR #Unmount the image file
+	sync
+	rmdir $RANDVAR #Remove the temporary directory
+	echo #newline
+done
