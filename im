@@ -1,0 +1,41 @@
+#!/bin/bash
+
+photocount=0
+smallphotocount=0
+htmlstring=""
+
+if [ ! -f 1.jpg ]; then
+	while read f
+	do 
+		if [[ $(identify -format "%[fx:(1-w/h)]" "$f") = -* ]]
+		then
+			((photocount++))
+			if [[ -f "$photocount.jpg" ]]
+			then
+				echo "$photocount.jpg already exists!"
+			else
+				convert "$f" -resize 800x600 -quality 80 "$photocount.jpg"
+			fi
+			htmlstring="$htmlstring<a href=\"$f\" class=\"im\"><img src=\"$photocount.jpg\"></a>"
+		else
+			((smallphotocount++))
+			if [[ $smallphotocount = 1 ]]
+			then
+				smallphotoname="s"
+			else
+				smallphotoname="s$smallphotocount"
+			fi
+			if [[ -f "$smallphotoname.jpg" ]]
+			then
+				echo "$smallphotoname.jpg already exists!"
+			else
+				convert "$f" -resize 400x600 -quality 80 "$smallphotoname.jpg"
+			fi
+		fi
+	done <<< $(find ./ -maxdepth 1 -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \))
+	echo "found $photocount large and $smallphotocount small photos"
+	echo "$htmlstring"
+	echo "$htmlstring" | clip.exe
+else
+	echo "photos already exist"
+fi
