@@ -500,7 +500,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SS_LSFT(SS_TAP(X_COMMA)) SS_DELAY(5)
           SS_TAP(X_R) SS_DELAY(5)
           SS_LCTL(SS_TAP(X_B)) SS_DELAY(5) 
-          SS_TAP(X_P)
+          SS_TAP(X_N)
       );
     }
     break;
