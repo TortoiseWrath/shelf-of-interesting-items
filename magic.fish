@@ -74,6 +74,7 @@ function run_test -a test
         "returned non-zero status $test_status"
       fail_test $Test
     end
+  else
     fail_test $test
   end
   echo
