@@ -167,19 +167,17 @@ function permutations
 end
 
 # Expects that two strings are equal after trimming.
-# Usage: expect_ok "$str1" "$str2" "Message on failure"
+# Usage: expect_eq "$str1" "$str2" "Message on failure"
+# Message is optional for this one.
 function expect_eq -a a b msg
-  expect "$(string trim $a)" = "$(string trim $b)" (
-    if test -n "$msg"
-      echo $msg
-    else
-      echo "Expected equal:
+  if ! test -n "$msg"
+    set -f msg "Expected equal:
 (value 1)
 $a
 (value 2)
 $b"
-    end
-  )
+  end
+  expect "$(string trim $a)" = "$(string trim $b)" "$msg"
 end
 
 # Expects that a given command exits with status 0.
