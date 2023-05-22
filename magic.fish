@@ -135,12 +135,43 @@ function run_all_tests
   end
 end
 
+# Echoes a list with one entry for each permutation of the arguments.
+# Each permutation is \n-terminated; each element is \r-terminated.
+function permutations
+  set -f count (count $argv)
+  if test $count -le 1
+    echo $argv
+    return 0
+  end
+  if test $count -eq 2
+    echo "$argv[1]"\r"$argv[2]"
+    echo "$argv[2]"\r"$argv[1]"
+    return 0
+  end
+  set -f first 1
+  while test $first -le $count
+    set -l next (math $first + 1)
+    if test $first = 1
+      set -f partials (permutations $argv[2..-1])
+    else if test $first = $count
+      set -f partials (permutations $argv[1..-2])
+    else
+      set -l previous (math $first - 1)
+      set -f partials (permutations $argv[1..$previous] $argv[$next..-1])
+    end
+    for partial in $partials
+      echo "$argv[$first]"\r"$partial"
+    end
+    set -f first $next
+  end
+end
+
 # Expects that two strings are equal after trimming.
 # Usage: expect_ok "$str1" "$str2" "Message on failure"
 function expect_eq -a a b msg
   expect "$(string trim $a)" = "$(string trim $b)" (
-    if msg
-      echo msg
+    if test -n "$msg"
+      echo $msg
     else
       echo "Expected equal:
 (value 1)
@@ -168,7 +199,36 @@ function expect_ok
 end
 
 # Like fish `test` but with a built-in expectation.
-# Example: expect $foo -gt $bar
+# Example: expect $foo -gt $bar "Message on failure"
 function expect
   expect_ok (test $argv[1..-2]) $argv[-1]
+end
+
+# Warning: This is O(n!).
+# Expect some permutation of the array in the variable with name var1 to be the
+# array in the variable with name var2.
+# Example:
+#   set foo a b c
+#   set bar b c a
+#   expect_some_permutation foo bar "Bar $bar is not a permutation of foo $foo"
+function expect_some_permutation --no-scope-shadowing -a var1 var2 msg
+  if test (count $$var1) != (count $$var2)
+    err "Array $var1 has length $(count $$var1) but array $var2 has length $(count $$var2)"
+    fail $msg
+    return 1
+  end
+  if test (count $$var1) = 1
+    expect "$$var1" = "$$var2" "$msg"
+  end
+  for permutation in (string split \n "$(permutations $$var1)")
+    if test "$(string join \r $$var2)" = "$permutation"
+      pass
+      return 0
+    end
+  end
+  if test -n "$msg"
+    fail $msg
+  else
+    fail " $var2 is not a permutation of $var1"\n\n"$var1:"\n"$$var1"\n\n"$var2:"\n"$$var2"
+  end
 end
