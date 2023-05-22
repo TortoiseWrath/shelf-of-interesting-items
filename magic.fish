@@ -169,7 +169,7 @@ end
 # Expects that two strings are equal after trimming.
 # Usage: expect_eq "$str1" "$str2" "Message on failure"
 # Message is optional for this one.
-function expect_eq -a a b ms
+function expect_eq -a a b msg
   if ! test -n "$msg"
     set -f msg "Expected equal:
 (value 1)
