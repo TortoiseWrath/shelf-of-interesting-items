@@ -1,0 +1,4 @@
+# Copyright 2024 Google LLC
+
+# Exclude qmk/ from the linguist stats since I didn't really write the C
+qmk/* linguist-vendored
