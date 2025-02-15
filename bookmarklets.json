@@ -1,5 +1,5 @@
 {
   "Print invoices": {
-    "Discogs": "javascript:if (!window.location.href.match('prints?')) window.location.href = document.getElementById('order-print-button').href; let currency = document.querySelector('section.order-data>div.cell>div.field-value:last-of-type').textContent.trim(); let total = document.querySelector('table.order-table>tbody>tr:last-of-type>td:last-of-type').textContent.trim().replaceAll(',',''); document.title = new Date(Date.parse(document.querySelector('section.bought-by>div.cell>div:last-of-type').textContent.substr(14,12))).toISOString().substr(0,10)+' Discogs '+(currency === 'USD' ? total : total.replace(/^[^0-9]+(\d)/,'$1') + ' ' + currency); window.print();"
+    "Discogs": "javascript:if (!window.location.href.match('prints?')) window.location.href = document.getElementById('order-print-button').href; var currency = document.querySelector('section.order-data>div.cell>div.field-value:last-of-type').textContent.trim(); var total = document.querySelector('table.order-table>tbody>tr:last-of-type>td:last-of-type').textContent.trim().replaceAll(',',''); document.title = new Date(Date.parse(document.querySelector('section.bought-by>div.cell>div:last-of-type').textContent.substr(14,12))).toISOString().substr(0,10)+' Discogs '+(currency === 'USD' ? total : total.replace(/^[^0-9]+(\d)/,'$1') + ' ' + currency); window.print();"
   }
 }
