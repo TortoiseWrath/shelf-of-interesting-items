@@ -1,3 +1,6 @@
+// Copyright 2025 Google LLC
+// This is not a Google product.
+
 function checkOnKelp() {
   Shelly.call("HTTP.REQUEST", {
     'url': 'http://192.168.12.200',
