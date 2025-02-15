@@ -1,0 +1,5 @@
+{
+  "Print invoices": {
+    "Discogs": "javascript:if (!window.location.href.match('prints?%27)) window.location.href = document.getElementById(%27order-print-button%27).href; let currency = document.querySelector(%27section.order-data>div.cell>div.field-value:last-of-type%27).textContent.trim(); let total = document.querySelector(%27table.order-table>tbody>tr:last-of-type>td:last-of-type%27).textContent.trim().replaceAll(%27,%27,%27%27); document.title = new Date(Date.parse(document.querySelector(%27section.bought-by>div.cell>div:last-of-type%27).textContent.substr(14,12))).toISOString().substr(0,10)+%27 Discogs %27+(currency === %27USD%27 ? total : total.replace(/^[^0-9]+(\d)/,%27$1%27) + %27 %27 + currency); window.print();"
+  }
+}
