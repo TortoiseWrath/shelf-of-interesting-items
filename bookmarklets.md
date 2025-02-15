@@ -12,8 +12,7 @@ Opens the printer-friendly version of an order/receipt page on one of the below 
 * Discogs
 
 ```js
-javascript:
-void(() => {
+javascript:void(() => {
   if (window.location.href.match('discogs.com')) {
     if (!window.location.href.match('prints?')) {
       window.location.href = document.getElementById('order-print-button').href;
