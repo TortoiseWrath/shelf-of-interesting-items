@@ -12,7 +12,7 @@ Opens the printer-friendly version of an order/receipt page on one of the below 
 * Discogs
 
 ```js
-javascript:// Copyright 2025 Google LLC. This is not a Google product.
+javascript:
 void(() => {
   if (window.location.href.match('discogs.com')) {
     if (!window.location.href.match('prints?')) {
