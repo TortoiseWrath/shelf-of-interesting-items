@@ -126,7 +126,7 @@ void(() => {
       amount = amount.replace(/^[^0-9]+/,'') + ' ' + currency;
     }
     const date = convertDate(getText('div.top-info').split(' on ')[1].split('\n')[0]);
-    document.title = `${date} Bandcamp ${total}`;
+    document.title = `${date} Bandcamp ${amount}`;
     window.print();
     return;
   }
