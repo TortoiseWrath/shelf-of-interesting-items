@@ -31,7 +31,7 @@ void(() => {
     if (currency !== 'USD') {
       total = `${total.replace(/^[^0-9]+(\d)/,'$1')} ${currency}`;
     }
-    document.title = `${date} Discogs ${currency === USD ? total : total.replace(/^[^0-9]+(\d)/,'$1') + ' ' + currency}`;
+    document.title = `${date} Discogs ${currency === 'USD' ? total : total.replace(/^[^0-9]+(\d)/,'$1') + ' ' + currency}`;
     window.print();
     return;
   }
